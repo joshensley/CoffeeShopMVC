@@ -54,19 +54,15 @@
 <script>
     $(function () {
 
-        // NEED TO MAKE THIS A PARAM FOR THE CONTROLLER
         const orderCartGroup = localStorage.getItem("orderCartGroup").toString();
         
-
         $.ajax({
             type: "GET",
             url: "@Url.Action("GetOrderCartDTO", "Home", new { Area = "" })",
             data: { orderCartGroup: orderCartGroup },
             success: function (response) {
-                console.log(response);
 
-
-                if (response.length > 0 || response === null) {
+                if (response.length > 0 || response !== null) {
 
                     // sets total price
                     let sumTotalPrice = response.reduce(function (accumulator, currentValue) {

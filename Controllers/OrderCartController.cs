@@ -1,4 +1,5 @@
-﻿using CoffeeShopMVC.Services;
+﻿using CoffeeShopMVC.Repositories.DTO;
+using CoffeeShopMVC.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -16,17 +17,21 @@ namespace CoffeeShopMVC.Controllers
             _orderCartService = orderCartService;
         }
 
-
-        // OrderCartGroup IS HARDCODED
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var orderCartDTO = (await _orderCartService.GetOrderCartDTO("0.050944554144065624")).Value;
-
-            return View(orderCartDTO);
+            return View();
         }
 
         /* ---------- jQuery ---------- */
+        [HttpGet]
+        public async Task<IEnumerable<OrderCartDTO>> GetOrderCartDTO(string id)
+        {
+            var orderCartDTO = (await _orderCartService.GetOrderCartDTO(id)).Value;
+
+            return orderCartDTO;
+        }
+
         [HttpPost]
         public async Task<int> DeleteItemById(int id)
         {

@@ -1,9 +1,8 @@
 ﻿$(document).ready(function () {
 
     // Delete Item in cart
-    $(".deleteItem").click(function () {
-
-        console.log($(this).data());
+    $(document).on('click', ".delete-item", function () {
+        console.log("click");
 
         var data = $(this).data("id");
         var url = $(this).data("request-url");
@@ -21,6 +20,7 @@
                     });
 
                 // When deleting item need to remove the item in the cart as well
+                // Add change the total price in check out
 
                 const quantity = parseInt($("#sumTotalQuantity").text()) - 1;
                 $("#sumTotalQuantity").text(quantity);
@@ -31,4 +31,5 @@
             }
         })
     });
+
 });
