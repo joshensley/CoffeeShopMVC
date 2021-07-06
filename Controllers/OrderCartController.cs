@@ -21,7 +21,7 @@ namespace CoffeeShopMVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var orderCartDTO = (await _orderCartService.GetOrderCartDTO("0.6896846620376818")).Value;
+            var orderCartDTO = (await _orderCartService.GetOrderCartDTO("0.050944554144065624")).Value;
 
             return View(orderCartDTO);
         }

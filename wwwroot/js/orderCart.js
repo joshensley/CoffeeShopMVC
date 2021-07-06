@@ -3,6 +3,8 @@
     // Delete Item in cart
     $(".deleteItem").click(function () {
 
+        console.log($(this).data());
+
         var data = $(this).data("id");
         var url = $(this).data("request-url");
 
@@ -12,8 +14,6 @@
             contentType: "application/json;charset=UTF-8",
             dataType: "JSON",
             success: function (response) {
-
-                
 
                 $(`#deleteItem-${response}`)
                     .fadeOut(1000, function () {
