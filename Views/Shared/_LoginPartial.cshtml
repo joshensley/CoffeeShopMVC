@@ -1,0 +1,126 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using CoffeeShopMVC.Models.User
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Dashboard</a>
+        </li>
+        <li class="nav-item">
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+            </form>
+        </li>
+    }
+    else
+    {
+
+        <li class="nav-item dropdown">
+            <a class="nav-link " data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                <i class="fas fa-shopping-cart"></i> <span id="sumTotalQuantity"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><hr class="dropdown-divider"></li>
+                <li class="text-center">Total <span id="sumTotalPrice">$</span></li>
+                <li><hr class="dropdown-divider"></li>
+                <li class="m-1">
+
+                    <a class="btn btn-sm btn-outline-secondary form-control" 
+                       asp-area="" 
+                       asp-controller="OrderCart" 
+                       asp-action="Index">
+                        Check Out
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        </li>
+    }
+</ul>
+
+
+
+<script>
+    $(function () {
+
+        // NEED TO MAKE THIS A PARAM FOR THE CONTROLLER
+        const orderCartGroup = localStorage.getItem("orderCartGroup").toString();
+        
+
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("GetOrderCartDTO", "Home", new { Area = "" })",
+            data: { orderCartGroup: orderCartGroup },
+            success: function (response) {
+                console.log(response);
+
+
+                if (response.length > 0 || response === null) {
+
+                    // sets total price
+                    let sumTotalPrice = response.reduce(function (accumulator, currentValue) {
+                        return accumulator + currentValue.itemProductTotalPrice;
+                    }, 0).toFixed(2);
+
+
+
+                    $("#sumTotalPrice").append(sumTotalPrice);
+
+                    // sets total quantity
+                    let sumTotalQuantity = response.length;
+                    $("#sumTotalQuantity").append(sumTotalQuantity);
+
+                    // send list item
+                    response.forEach(function (item) {
+                        $(".dropdown-menu").prepend(
+                            `<li>
+                                <a class="dropdown-item" href="#">
+                                    <small>
+                                        <i class="fas fa-coffee"></i> ${item.itemProductName} - ${item.quantity} qty - $${item.itemProductTotalPrice}
+                                    </small>
+                                </a>
+                            </li>`
+                        );
+                    });
+                } else {
+
+                    // sets total price
+                    $("#sumTotalPrice").append(0.00);
+
+                    // sets total quantity
+                    $("#sumTotalQuantity").append(0);
+
+                    // send list item
+                    $(".dropdown-menu").prepend(
+                        `<li class="text-center">
+                            <a class="dropdown-item" href="#">
+                                <small>
+                                    No items in your cart
+                                </small>
+                            </a>
+                        </li>`
+                    );
+
+                }
+
+                
+                
+                },
+                error: function (req, status, error) {
+                    console.log(error);
+                }
+            });
+
+    });
+</script>
