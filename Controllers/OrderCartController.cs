@@ -1,4 +1,5 @@
-﻿using CoffeeShopMVC.Repositories.DTO;
+﻿using CoffeeShopMVC.Models.Purchase;
+using CoffeeShopMVC.Repositories.DTO;
 using CoffeeShopMVC.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -33,7 +34,7 @@ namespace CoffeeShopMVC.Controllers
         }
 
         [HttpPost]
-        public async Task<int> DeleteItemById(int id)
+        public async Task<OrderCart> DeleteItemById(int id)
         {
             var deletedItemId = (await _orderCartService.DeleteItemById(id)).Value;
 

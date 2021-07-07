@@ -71,7 +71,7 @@ namespace CoffeeShopMVC.Services
         }
 
         // DELETE: Delete item in order cart
-        public async Task<ActionResult<int>> DeleteItemById(int id)
+        public async Task<ActionResult<OrderCart>> DeleteItemById(int id)
         {
             return await _orderCartRepository.Delete(id);
         }

@@ -48,13 +48,13 @@ namespace CoffeeShopMVC.Repositories
             return model;
         }
 
-        public async Task<ActionResult<int>> Delete(int id)
+        public async Task<ActionResult<OrderCart>> Delete(int id)
         {
             var orderCart = await _db.OrderCart.FindAsync(id);
 
             _db.OrderCart.Remove(orderCart);
             await _db.SaveChangesAsync();
-            return orderCart.ID;
+            return orderCart;
 
         }
     }

@@ -18,6 +18,6 @@ namespace CoffeeShopMVC.Repositories
 
         Task<ActionResult<OrderCart>> Post(OrderCart model);
 
-        Task<ActionResult<int>> Delete(int id);
+        Task<ActionResult<OrderCart>> Delete(int id);
     }
 }

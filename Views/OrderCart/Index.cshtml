@@ -7,15 +7,14 @@
 <div class="container mt-3">
 
     <div class="row">
-        <div class="col-8 text-center">
-            <h1>Order Cart Controller</h1>
-        </div>
-        <div class="col-4">
+        <div class="offset-4 col-4">
             <div class="card" style="width: 22rem;">
                 <div class="card-header text-center">
                     Cart
                 </div>
-                <ul id="cart-list" class="list-group list-group-flush"></ul>
+                <ul id="cart-list" class="list-group list-group-flush">
+
+                </ul>
                 <div id="sumCheckOutTotalPrice" class="card-footer text-center">
                    $
                 </div>
@@ -35,32 +34,44 @@
                 type: "GET",
                 url: url,
                 success: function (response) {
+                    
+                    if (response.length > 0) {
 
-                    response.forEach(function (item) {
-                        $("#cart-list").append(
-                            `<li class="list-group-item" id="deleteItem-${item.id}">
-                                <small>
-                                    <i class="fas fa-coffee"></i>
-                                    ${item.itemProductName} -
-                                    ${item.quantity} qty -
-                                    $${item.itemProductTotalPrice}
-                                    <button id="hello" class="delete-item btn btn-sm btn-danger fas fa-times"
-                                            style="float: right; cursor: pointer;"
-                                            data-id="${item.id}"
-                                            data-request-url="/OrderCart/DeleteItemById">
-                                    </button>
-                                </small>
-                            </li>`
-                        )
-                    })
-
-                    if (response.length > 0 || response !== null) {
                         let sumTotalPrice = response.reduce(function (accumulator, currentValue) {
                             return accumulator + currentValue.itemProductTotalPrice;
                         }, 0).toFixed(2);
                         $("#sumCheckOutTotalPrice").append(sumTotalPrice);
+
+
+                        response.forEach(function (item) {
+                            $("#cart-list").append(
+                                `<li class="list-group-item" id="deleteItem-${item.id}">
+                                    <small>
+                                        <i class="fas fa-coffee"></i>
+                                        ${item.itemProductName} -
+                                        ${item.quantity} qty -
+                                        <span id="navbarTotalPrice-${item.id}">$${item.itemProductTotalPrice}</span>
+                                        <button class="delete-item btn btn-sm btn-danger fas fa-times"
+                                                style="float: right; cursor: pointer;"
+                                                data-id="${item.id}"
+                                                data-request-url="/OrderCart/DeleteItemById">
+                                        </button>
+                                    </small>
+                                </li>`
+                            )
+                        })
+
                     } else {
-                        $("#sumCheckOutTotalPrice").append(0.00);
+
+                        $("#sumCheckOutTotalPrice").append("0.00");
+
+                        $("#cart-list").append(
+                            `<li class="list-group-item text-center">
+                                <small>
+                                    No items in cart
+                                </small>
+                             </li>`
+                        )
                     }
                     
 

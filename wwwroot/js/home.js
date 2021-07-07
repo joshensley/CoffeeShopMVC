@@ -54,10 +54,10 @@
             success: function (response) {
 
                 $(".dropdown-menu").prepend(
-                    `<li>
+                    `<li id="list-item-${response.id}">
                         <a class="dropdown-item" href="#">
                             <small>
-                                <i class="fas fa-coffee"></i> ${response.itemProductName} - ${response.quantity} qty - $${response.itemProductTotalPrice}
+                                <i class="fas fa-coffee"></i> ${response.itemProductName} - ${response.quantity} qty - <span id="navbarTotalPrice-${response.id}">$${response.itemProductTotalPrice}</span>
                             </small>
                         </a>
                     </li>`
@@ -65,6 +65,9 @@
 
                 increaseQuantity();
                 setNewPriceIncrease(response);
+
+                $("#no-items-in-cart").remove();
+
             },
             error: function (req, status, error) {
                 console.log(error);

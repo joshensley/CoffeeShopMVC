@@ -61,16 +61,14 @@
             url: "@Url.Action("GetOrderCartDTO", "Home", new { Area = "" })",
             data: { orderCartGroup: orderCartGroup },
             success: function (response) {
+                console.log(response);
 
-                if (response.length > 0 || response !== null) {
+                if (response.length > 0) {
 
                     // sets total price
                     let sumTotalPrice = response.reduce(function (accumulator, currentValue) {
                         return accumulator + currentValue.itemProductTotalPrice;
                     }, 0).toFixed(2);
-
-
-
                     $("#sumTotalPrice").append(sumTotalPrice);
 
                     // sets total quantity
@@ -80,10 +78,13 @@
                     // send list item
                     response.forEach(function (item) {
                         $(".dropdown-menu").prepend(
-                            `<li>
+                            `<li id="list-item-${item.id}">
                                 <a class="dropdown-item" href="#">
                                     <small>
-                                        <i class="fas fa-coffee"></i> ${item.itemProductName} - ${item.quantity} qty - $${item.itemProductTotalPrice}
+                                        <i class="fas fa-coffee"></i>
+                                        ${item.itemProductName} - 
+                                        ${item.quantity} qty - 
+                                        <span id="navbarTotalPrice-${response.id}">$${item.itemProductTotalPrice}</span>
                                     </small>
                                 </a>
                             </li>`
@@ -99,10 +100,10 @@
 
                     // send list item
                     $(".dropdown-menu").prepend(
-                        `<li class="text-center">
+                        `<li id="no-items-in-cart" class="text-center">
                             <a class="dropdown-item" href="#">
                                 <small>
-                                    No items in your cart
+                                    No items in cart
                                 </small>
                             </a>
                         </li>`
@@ -120,3 +121,5 @@
 
     });
 </script>
+
+@*<span id="navbarTotalPrice-${response.id}">*@
